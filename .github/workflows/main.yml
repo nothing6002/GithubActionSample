@@ -1,0 +1,39 @@
+name: Daily Checkin
+
+on:
+  # 每天UTC时间0点运行（北京时间早上8点）
+  schedule:
+    - cron: '0 0 * * *'
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+        
+    - name: Run checkin script
+      env:
+        KUNGAL_USERNAME: ${{ secrets.KUNGAL_USERNAME }}
+        KUNGAL_PASSWORD: ${{ secrets.KUNGAL_PASSWORD }}
+      run: |
+        python checkin.py
+        
+    - name: Upload checkin history as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: checkin-history
+        path: checkin_history.txt
