@@ -23,8 +23,8 @@ def main():
     
     # 使用环境变量，而不是硬编码
     login_data = {
-        "name": KUNGAL_USERNAME,
-        "password": KUNGAL_PASSWORD
+        "name": USERNAME,
+        "password": PASSWORD
     }
     
     print("正在登录...")
